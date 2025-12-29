@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import './PatientDetail.css';
-import { apiService } from '../services/apiService';
+import React, { useState, useEffect } from "react";
+import "./PatientDetail.css";
+import { apiService } from "../services/apiService";
 
 const PatientDetail = ({ patientId, onBack }) => {
   const [patient, setPatient] = useState(null);
@@ -8,17 +8,22 @@ const PatientDetail = ({ patientId, onBack }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // TODO: Implement fetchPatientData function
-  // This should fetch both patient details and their records
   useEffect(() => {
     const fetchPatientData = async () => {
       setLoading(true);
+      setError(null);
       try {
-        // TODO: Fetch patient data using apiService.getPatient(patientId)
-        // TODO: Fetch patient records using apiService.getPatientRecords(patientId)
-        // TODO: Update state with fetched data
+        const [patientData, recordsResponse] = await Promise.all([
+          apiService.getPatient(patientId),
+          apiService.getPatientRecords(patientId),
+        ]);
+
+        setPatient(patientData);
+        setRecords(recordsResponse.records || []);
       } catch (err) {
-        setError(err.message);
+        setPatient(null);
+        setRecords([]);
+        setError(err?.message || "Failed to load patient details");
       } finally {
         setLoading(false);
       }
@@ -28,6 +33,22 @@ const PatientDetail = ({ patientId, onBack }) => {
       fetchPatientData();
     }
   }, [patientId]);
+
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+    return new Intl.DateTimeFormat("en-US", {
+      dateStyle: "medium",
+      timeZone: "UTC",
+    }).format(new Date(date));
+  };
+
+  const getRecordTypeClass = (type) => {
+    if (!type) return "";
+    const normalized = type.toLowerCase();
+    if (normalized.includes("lab")) return "lab";
+    if (normalized.includes("treat")) return "treatment";
+    return "diagnostic";
+  };
 
   if (loading) {
     return (
@@ -40,8 +61,12 @@ const PatientDetail = ({ patientId, onBack }) => {
   if (error || !patient) {
     return (
       <div className="patient-detail-container">
-        <div className="error">Error loading patient: {error || 'Patient not found'}</div>
-        <button onClick={onBack} className="back-btn">Back to List</button>
+        <div className="error">
+          Error loading patient: {error || "Patient not found"}
+        </div>
+        <button onClick={onBack} className="back-btn">
+          Back to List
+        </button>
       </div>
     );
   }
@@ -49,28 +74,104 @@ const PatientDetail = ({ patientId, onBack }) => {
   return (
     <div className="patient-detail-container">
       <div className="patient-detail-header">
-        <button onClick={onBack} className="back-btn">← Back to List</button>
+        <button onClick={onBack} className="back-btn">
+          ← Back to List
+        </button>
       </div>
 
       <div className="patient-detail-content">
-        {/* TODO: Display patient information */}
-        {/* Show: name, email, dateOfBirth, gender, phone, address, walletAddress */}
         <div className="patient-info-section">
           <h2>Patient Information</h2>
-          {/* Your implementation here */}
-          <div className="placeholder">
-            <p>Display patient information here</p>
+          <div className="patient-info-grid">
+            <div className="info-item">
+              <span className="info-label">Name</span>
+              <span className="info-value">{patient.name}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Patient ID</span>
+              <span className="info-value">{patient.patientId}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Email</span>
+              <span className="info-value">{patient.email}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Phone</span>
+              <span className="info-value">{patient.phone}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Gender</span>
+              <span className="info-value">{patient.gender}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Date of Birth</span>
+              <span className="info-value">
+                {formatDate(patient.dateOfBirth)}
+              </span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Address</span>
+              <span className="info-value">{patient.address}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Wallet</span>
+              <span className="info-value wallet">
+                {patient.walletAddress || "N/A"}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* TODO: Display patient records */}
-        {/* Show list of medical records with: type, title, date, doctor, hospital, status */}
         <div className="patient-records-section">
           <h2>Medical Records ({records.length})</h2>
-          {/* Your implementation here */}
-          <div className="placeholder">
-            <p>Display medical records here</p>
-          </div>
+          {records.length === 0 ? (
+            <div className="placeholder">
+              <p>No medical records found for this patient.</p>
+            </div>
+          ) : (
+            <div className="records-list">
+              {records.map((record) => (
+                <div key={record.id} className="record-card">
+                  <div className="record-header">
+                    <div>
+                      <div className="record-title">{record.title}</div>
+                      <div className="record-date">
+                        {formatDate(record.date)}
+                      </div>
+                    </div>
+                    <span
+                      className={`record-type ${getRecordTypeClass(
+                        record.type
+                      )}`}
+                    >
+                      {record.type}
+                    </span>
+                  </div>
+                  <p className="record-description">
+                    {record.description?.length > 320
+                      ? `${record.description.slice(0, 320)}…`
+                      : record.description}
+                  </p>
+                  <div className="record-meta">
+                    <div className="record-meta-item">
+                      <strong>Doctor:</strong> {record.doctor}
+                    </div>
+                    <div className="record-meta-item">
+                      <strong>Hospital:</strong> {record.hospital}
+                    </div>
+                    <div className="record-meta-item">
+                      <strong>Blockchain Hash:</strong> {record.blockchainHash}
+                    </div>
+                    <div className="record-status-wrapper">
+                      <span className={`record-status ${record.status}`}>
+                        Status: {record.status}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -78,5 +179,3 @@ const PatientDetail = ({ patientId, onBack }) => {
 };
 
 export default PatientDetail;
-
-

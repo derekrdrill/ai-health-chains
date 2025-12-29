@@ -1,0 +1,36 @@
+# Cursor project rules
+
+## Components and structure
+
+- One React component per file; even tiny helpers get their own file.
+- Components live in a folder named for the component to collocate stories/tests/helpers. Page root components can live at the page root; child components follow the folder pattern.
+- Large components must be split into smaller pieces; private pieces live in a `_components` folder next to the parent.
+- Component naming is prefixed by page/feature and deepens with the tree
+- Use clear boolean flags (`is/has/should`) with flat `&&` conditionals; avoid nested ternaries.
+- Mirror the Photos structure for new domains (`_components`, `_hooks`, `_state`, `_actions`, `_types`).
+- Keep shared types in `_types`; avoid inline duplication.
+
+## Functions and state
+
+- Functions take object-based argument shapes (no positional args); destructure at the top.
+- For Zustand, select individual slices (avoid combined selectors that recreate snapshots/loops).
+- Controller hooks live in `_hooks` and are marked `use client` when needed.
+
+## Styling
+
+- Use `classNames` for dynamic styling with object-based structures (e.g., `classNames("base", { "is-active": condition })`, see `components/ui/Carousel/Carousel.tsx`).
+- Maintain existing design tokens and Tailwind classes.
+
+## Images and Next.js
+
+- Add remote host patterns to `next.config.ts` when introducing new image domains.
+- Follow Next.js app router conventions (`app/.../page.tsx`, server actions in `app/_actions`).
+
+## Testing and stories
+
+- Every component gets a Storybook story; keep stories colocated with components.
+
+## File organization
+
+- Imports at the top, exports at the bottom; keep consistency per file type.
+- Avoid introducing new dependencies without discussion.
