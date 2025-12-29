@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import WalletConnection from './components/WalletConnection';
-import PatientList from './components/PatientList';
-import PatientDetail from './components/PatientDetail';
-import ConsentManagement from './components/ConsentManagement';
-import TransactionHistory from './components/TransactionHistory';
-import StatsDashboard from './components/StatsDashboard';
+import {
+  PatientList,
+  PatientDetail,
+  ConsentManagement,
+  TransactionHistory,
+  StatsDashboard,
+  WalletConnection,
+} from './components';
 import { useWeb3 } from './hooks/useWeb3';
-import { apiService } from './services/apiService';
 
 function App() {
   const { account, connectWallet, disconnectWallet, isConnected } = useWeb3();
@@ -17,12 +18,11 @@ function App() {
   useEffect(() => {
     // Check if wallet is already connected
     if (window.ethereum) {
-      window.ethereum.request({ method: 'eth_accounts' })
-        .then(accounts => {
-          if (accounts.length > 0) {
-            // Wallet already connected
-          }
-        });
+      window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
+        if (accounts.length > 0) {
+          // Wallet already connected
+        }
+      });
     }
   }, []);
 
@@ -77,29 +77,19 @@ function App() {
                 onBack={() => setSelectedPatient(null)}
               />
             ) : (
-              <PatientList
-                onSelectPatient={setSelectedPatient}
-              />
+              <PatientList onSelectPatient={setSelectedPatient} />
             )}
           </div>
         )}
 
-        {activeTab === 'consents' && (
-          <ConsentManagement account={account} />
-        )}
+        {activeTab === 'consents' && <ConsentManagement account={account} />}
 
-        {activeTab === 'transactions' && (
-          <TransactionHistory account={account} />
-        )}
+        {activeTab === 'transactions' && <TransactionHistory account={account} />}
 
-        {activeTab === 'stats' && (
-          <StatsDashboard />
-        )}
+        {activeTab === 'stats' && <StatsDashboard />}
       </main>
     </div>
   );
 }
 
 export default App;
-
-

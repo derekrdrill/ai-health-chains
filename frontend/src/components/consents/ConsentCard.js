@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const ConsentCard = ({
   consent,
@@ -9,14 +10,14 @@ const ConsentCard = ({
 }) => {
   const createdAt = formatDateTime(consent.createdAt);
   const statusClass = getStatusClass(consent.status);
-  const blockchainHash = consent.blockchainTxHash || "Not yet recorded";
-  const showActivateButton = consent.status === "pending";
+  const blockchainHash = consent.blockchainTxHash || 'Not yet recorded';
+  const shouldShowActivateButton = consent.status === 'pending';
 
   const handleActivate = () => {
-    if (showActivateButton) {
+    if (shouldShowActivateButton) {
       onActivate({
         consentId: consent.id,
-        newStatus: "active",
+        newStatus: 'active',
         currentHash: consent.blockchainTxHash,
       });
     }
@@ -31,9 +32,7 @@ const ConsentCard = ({
             <strong>Patient:</strong> {consent.patientId}
           </div>
         </div>
-        <span className={`consent-status ${statusClass}`}>
-          {consent.status}
-        </span>
+        <span className={`consent-status ${statusClass}`}>{consent.status}</span>
       </div>
 
       <div className="consent-details">
@@ -50,19 +49,35 @@ const ConsentCard = ({
         </div>
       </div>
 
-      {showActivateButton && (
+      {shouldShowActivateButton && (
         <div className="consent-actions">
           <button
             className="action-btn primary"
             onClick={handleActivate}
             disabled={isUpdating}
           >
-            {isUpdating ? "Updating..." : "Activate Consent"}
+            {isUpdating ? 'Updating...' : 'Activate Consent'}
           </button>
         </div>
       )}
     </div>
   );
+};
+
+ConsentCard.propTypes = {
+  consent: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    purpose: PropTypes.string.isRequired,
+    patientId: PropTypes.string.isRequired,
+    walletAddress: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    blockchainTxHash: PropTypes.string,
+    createdAt: PropTypes.string,
+  }).isRequired,
+  formatDateTime: PropTypes.func.isRequired,
+  getStatusClass: PropTypes.func.isRequired,
+  onActivate: PropTypes.func.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
 };
 
 export default ConsentCard;

@@ -144,7 +144,8 @@
   font-size: 0.9rem;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 3rem;
   font-size: 1.1rem;
@@ -170,5 +171,3 @@
     grid-template-columns: 1fr;
   }
 }
-
-

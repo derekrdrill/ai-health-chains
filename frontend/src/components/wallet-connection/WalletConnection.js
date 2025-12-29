@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './WalletConnection.css';
 
 const WalletConnection = ({ account, isConnected, onConnect, onDisconnect }) => {
@@ -28,6 +29,11 @@ const WalletConnection = ({ account, isConnected, onConnect, onDisconnect }) => 
   );
 };
 
+WalletConnection.propTypes = {
+  account: PropTypes.string,
+  isConnected: PropTypes.bool.isRequired,
+  onConnect: PropTypes.func.isRequired,
+  onDisconnect: PropTypes.func.isRequired,
+};
+
 export default WalletConnection;
-
-

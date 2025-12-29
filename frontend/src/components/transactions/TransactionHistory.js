@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
-import "./TransactionHistory.css";
-import { apiService } from "../services/apiService";
-import TransactionCard from "./TransactionHistory/_components/TransactionCard";
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import './TransactionHistory.css';
+import { apiService } from '../../services/apiService';
+import TransactionCard from './TransactionCard';
 
 const DEFAULT_LIMIT = 20;
 
@@ -10,20 +11,18 @@ const TransactionHistory = ({ account }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const hasNoTransactions = transactions.length === 0;
   const walletFilter = account || null;
 
   const fetchTransactions = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await apiService.getTransactions(
-        walletFilter,
-        DEFAULT_LIMIT
-      );
+      const response = await apiService.getTransactions(walletFilter, DEFAULT_LIMIT);
       setTransactions(response.transactions || []);
     } catch (err) {
       setTransactions([]);
-      setError(err?.message || "Failed to load transactions");
+      setError(err?.message || 'Failed to load transactions');
     } finally {
       setLoading(false);
     }
@@ -66,12 +65,10 @@ const TransactionHistory = ({ account }) => {
       </div>
 
       <div className="transactions-list">
-        {transactions.length === 0 ? (
+        {hasNoTransactions ? (
           <div className="placeholder">
             <p>No transactions found.</p>
-            {account && (
-              <p>Try disconnecting the wallet filter to view all activity.</p>
-            )}
+            {account && <p>Try disconnecting the wallet filter to view all activity.</p>}
           </div>
         ) : (
           transactions.map((transaction) => (
@@ -84,3 +81,7 @@ const TransactionHistory = ({ account }) => {
 };
 
 export default TransactionHistory;
+
+TransactionHistory.propTypes = {
+  account: PropTypes.string,
+};

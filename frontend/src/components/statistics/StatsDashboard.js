@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import "./StatsDashboard.css";
-import { apiService } from "../services/apiService";
-import StatCard from "./StatsDashboard/_components/StatCard";
+import React, { useState, useEffect } from 'react';
+import './StatsDashboard.css';
+import { apiService } from '../../services/apiService';
+import StatCard from './StatCard';
 
 const STAT_CONFIG = [
-  { key: "totalPatients", label: "Total Patients", accent: "primary" },
-  { key: "totalRecords", label: "Total Records" },
-  { key: "totalConsents", label: "Total Consents" },
-  { key: "activeConsents", label: "Active Consents" },
-  { key: "pendingConsents", label: "Pending Consents" },
-  { key: "totalTransactions", label: "Total Transactions" },
+  { key: 'totalPatients', label: 'Total Patients', accent: 'primary' },
+  { key: 'totalRecords', label: 'Total Records' },
+  { key: 'totalConsents', label: 'Total Consents' },
+  { key: 'activeConsents', label: 'Active Consents' },
+  { key: 'pendingConsents', label: 'Pending Consents' },
+  { key: 'totalTransactions', label: 'Total Transactions' },
 ];
 
 const StatsDashboard = () => {
@@ -26,7 +26,7 @@ const StatsDashboard = () => {
         setStats(response);
       } catch (err) {
         setStats(null);
-        setError(err?.message || "Failed to load statistics");
+        setError(err?.message || 'Failed to load statistics');
       } finally {
         setLoading(false);
       }
@@ -47,7 +47,7 @@ const StatsDashboard = () => {
     return (
       <div className="stats-dashboard-container">
         <div className="error">
-          Error loading statistics: {error || "No data available"}
+          Error loading statistics: {error || 'No data available'}
         </div>
       </div>
     );
@@ -59,12 +59,7 @@ const StatsDashboard = () => {
 
       <div className="stats-grid">
         {STAT_CONFIG.map(({ key, label, accent }) => (
-          <StatCard
-            key={key}
-            label={label}
-            value={stats?.[key] ?? 0}
-            accent={accent}
-          />
+          <StatCard key={key} label={label} value={stats?.[key] ?? 0} accent={accent} />
         ))}
       </div>
     </div>

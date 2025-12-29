@@ -1,23 +1,26 @@
-import React, { useState, useEffect, useCallback } from "react";
-import "./ConsentManagement.css";
-import { apiService } from "../services/apiService";
-import { useWeb3 } from "../hooks/useWeb3";
-import ConsentCard from "./ConsentManagement/_components/ConsentCard";
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import './ConsentManagement.css';
+import { apiService } from '../../services/apiService';
+import { useWeb3 } from '../../hooks/useWeb3';
+import ConsentCard from './ConsentCard';
 
-const DEFAULT_FORM = { patientId: "", purpose: "" };
+const DEFAULT_FORM = { patientId: '', purpose: '' };
 
 const ConsentManagement = ({ account }) => {
   const { signMessage } = useWeb3();
   const [consents, setConsents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterStatus, setFilterStatus] = useState('all');
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState(DEFAULT_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [updatingConsentId, setUpdatingConsentId] = useState(null);
 
-  const statusFilter = filterStatus === "all" ? null : filterStatus;
+  const hasNoConsents = consents.length === 0;
+  const shouldShowCreateForm = showCreateForm && account;
+  const statusFilter = filterStatus === 'all' ? null : filterStatus;
 
   const fetchConsents = useCallback(async () => {
     setLoading(true);
@@ -27,7 +30,7 @@ const ConsentManagement = ({ account }) => {
       setConsents(response.consents || []);
     } catch (err) {
       setConsents([]);
-      setError(err?.message || "Failed to load consents");
+      setError(err?.message || 'Failed to load consents');
     } finally {
       setLoading(false);
     }
@@ -38,15 +41,14 @@ const ConsentManagement = ({ account }) => {
   }, [fetchConsents]);
 
   const formatDateTime = (isoDate) => {
-    if (!isoDate) return "N/A";
-    return new Intl.DateTimeFormat("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
+    if (!isoDate) return 'N/A';
+    return new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
     }).format(new Date(isoDate));
   };
 
-  const getStatusClass = (status) =>
-    status === "active" ? "active" : "pending";
+  const getStatusClass = (status) => (status === 'active' ? 'active' : 'pending');
 
   const generateTxHash = () => {
     const randomSegment = Math.random().toString(16).slice(2, 10);
@@ -56,7 +58,7 @@ const ConsentManagement = ({ account }) => {
   const handleCreateConsent = async (e) => {
     e.preventDefault();
     if (!account) {
-      alert("Please connect your wallet first");
+      alert('Please connect your wallet first');
       return;
     }
 
@@ -87,7 +89,7 @@ const ConsentManagement = ({ account }) => {
     setUpdatingConsentId(consentId);
     try {
       const updates = { status: newStatus };
-      if (newStatus === "active" && !currentHash) {
+      if (newStatus === 'active' && !currentHash) {
         updates.blockchainTxHash = generateTxHash();
       }
 
@@ -117,7 +119,7 @@ const ConsentManagement = ({ account }) => {
           onClick={() => setShowCreateForm(!showCreateForm)}
           disabled={!account}
         >
-          {showCreateForm ? "Cancel" : "Create New Consent"}
+          {showCreateForm ? 'Cancel' : 'Create New Consent'}
         </button>
       </div>
 
@@ -136,29 +138,27 @@ const ConsentManagement = ({ account }) => {
         </div>
       )}
 
-      {showCreateForm && account && (
+      {shouldShowCreateForm && (
         <div className="create-consent-form">
           <h3>Create New Consent</h3>
           <form onSubmit={handleCreateConsent}>
             <div className="form-group">
-              <label>Patient ID</label>
+              <label htmlFor="consent-patient-id">Patient ID</label>
               <input
+                id="consent-patient-id"
                 type="text"
                 value={formData.patientId}
-                onChange={(e) =>
-                  setFormData({ ...formData, patientId: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
                 required
                 placeholder="e.g., patient-001"
               />
             </div>
             <div className="form-group">
-              <label>Purpose</label>
+              <label htmlFor="consent-purpose">Purpose</label>
               <select
+                id="consent-purpose"
                 value={formData.purpose}
-                onChange={(e) =>
-                  setFormData({ ...formData, purpose: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
                 required
               >
                 <option value="">Select purpose...</option>
@@ -176,12 +176,8 @@ const ConsentManagement = ({ account }) => {
                 </option>
               </select>
             </div>
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Signing..." : "Sign & Create Consent"}
+            <button type="submit" className="submit-btn" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing...' : 'Sign & Create Consent'}
             </button>
           </form>
         </div>
@@ -189,27 +185,27 @@ const ConsentManagement = ({ account }) => {
 
       <div className="consent-filters">
         <button
-          className={filterStatus === "all" ? "active" : ""}
-          onClick={() => setFilterStatus("all")}
+          className={filterStatus === 'all' ? 'active' : ''}
+          onClick={() => setFilterStatus('all')}
         >
           All
         </button>
         <button
-          className={filterStatus === "active" ? "active" : ""}
-          onClick={() => setFilterStatus("active")}
+          className={filterStatus === 'active' ? 'active' : ''}
+          onClick={() => setFilterStatus('active')}
         >
           Active
         </button>
         <button
-          className={filterStatus === "pending" ? "active" : ""}
-          onClick={() => setFilterStatus("pending")}
+          className={filterStatus === 'pending' ? 'active' : ''}
+          onClick={() => setFilterStatus('pending')}
         >
           Pending
         </button>
       </div>
 
       <div className="consents-list">
-        {consents.length === 0 ? (
+        {hasNoConsents ? (
           <div className="placeholder">
             <p>No consents found for this filter.</p>
           </div>
@@ -228,6 +224,10 @@ const ConsentManagement = ({ account }) => {
       </div>
     </div>
   );
+};
+
+ConsentManagement.propTypes = {
+  account: PropTypes.string,
 };
 
 export default ConsentManagement;
