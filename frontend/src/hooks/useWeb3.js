@@ -7,39 +7,6 @@ export const useWeb3 = () => {
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
 
-  useEffect(() => {
-    // Check if MetaMask is installed
-    if (typeof window.ethereum !== 'undefined') {
-      // Check if already connected
-      window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-          setIsConnected(true);
-          initializeProvider();
-        }
-      });
-
-      // Listen for account changes
-      window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-          setIsConnected(true);
-          initializeProvider();
-        } else {
-          setAccount(null);
-          setIsConnected(false);
-          setProvider(null);
-          setSigner(null);
-        }
-      });
-
-      // Listen for chain changes
-      window.ethereum.on('chainChanged', () => {
-        window.location.reload();
-      });
-    }
-  }, []);
-
   const initializeProvider = () => {
     if (window.ethereum) {
       const web3Provider = new ethers.BrowserProvider(window.ethereum);
@@ -83,6 +50,39 @@ export const useWeb3 = () => {
     }
     return await signer.signMessage(message);
   };
+
+  useEffect(() => {
+    // Check if MetaMask is installed
+    if (typeof window.ethereum !== 'undefined') {
+      // Check if already connected
+      window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setIsConnected(true);
+          initializeProvider();
+        }
+      });
+
+      // Listen for account changes
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setIsConnected(true);
+          initializeProvider();
+        } else {
+          setAccount(null);
+          setIsConnected(false);
+          setProvider(null);
+          setSigner(null);
+        }
+      });
+
+      // Listen for chain changes
+      window.ethereum.on('chainChanged', () => {
+        window.location.reload();
+      });
+    }
+  }, []);
 
   return {
     account,

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const formatAddress = (address) => {
   if (!address) return 'N/A';
@@ -84,6 +85,21 @@ const TransactionCard = ({ transaction }) => {
       <div className="transaction-timestamp">{formattedTimestamp}</div>
     </div>
   );
+};
+
+TransactionCard.propTypes = {
+  transaction: PropTypes.shape({
+    id: PropTypes.string,
+    type: PropTypes.string,
+    status: PropTypes.string,
+    amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    currency: PropTypes.string,
+    timestamp: PropTypes.string,
+    from: PropTypes.string,
+    to: PropTypes.string,
+    blockchainTxHash: PropTypes.string,
+    blockNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }),
 };
 
 export default TransactionCard;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ConsentCard = ({
   consent,
@@ -61,6 +62,22 @@ const ConsentCard = ({
       )}
     </div>
   );
+};
+
+ConsentCard.propTypes = {
+  consent: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    purpose: PropTypes.string.isRequired,
+    patientId: PropTypes.string.isRequired,
+    walletAddress: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    blockchainTxHash: PropTypes.string,
+    createdAt: PropTypes.string,
+  }).isRequired,
+  formatDateTime: PropTypes.func.isRequired,
+  getStatusClass: PropTypes.func.isRequired,
+  onActivate: PropTypes.func.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
 };
 
 export default ConsentCard;

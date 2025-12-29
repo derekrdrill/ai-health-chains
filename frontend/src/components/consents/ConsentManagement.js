@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import './ConsentManagement.css';
 import { apiService } from '../../services/apiService';
 import { useWeb3 } from '../../hooks/useWeb3';
@@ -142,8 +143,9 @@ const ConsentManagement = ({ account }) => {
           <h3>Create New Consent</h3>
           <form onSubmit={handleCreateConsent}>
             <div className="form-group">
-              <label>Patient ID</label>
+              <label htmlFor="consent-patient-id">Patient ID</label>
               <input
+                id="consent-patient-id"
                 type="text"
                 value={formData.patientId}
                 onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
@@ -152,8 +154,9 @@ const ConsentManagement = ({ account }) => {
               />
             </div>
             <div className="form-group">
-              <label>Purpose</label>
+              <label htmlFor="consent-purpose">Purpose</label>
               <select
+                id="consent-purpose"
                 value={formData.purpose}
                 onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
                 required
@@ -221,6 +224,10 @@ const ConsentManagement = ({ account }) => {
       </div>
     </div>
   );
+};
+
+ConsentManagement.propTypes = {
+  account: PropTypes.string,
 };
 
 export default ConsentManagement;

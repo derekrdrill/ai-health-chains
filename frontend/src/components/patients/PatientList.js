@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './PatientList.css';
 import PatientPaginationControls from './PatientPaginationControls';
 import { apiService } from '../../services/apiService';
@@ -175,3 +176,7 @@ const PatientList = ({ onSelectPatient }) => {
 };
 
 export default PatientList;
+
+PatientList.propTypes = {
+  onSelectPatient: PropTypes.func.isRequired,
+};

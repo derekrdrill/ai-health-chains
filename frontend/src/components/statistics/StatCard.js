@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const StatCard = ({ label, value, accent }) => {
   const hasAccent = accent === 'primary';
@@ -13,6 +14,12 @@ const StatCard = ({ label, value, accent }) => {
       <div className="stat-description">{statDescription}</div>
     </div>
   );
+};
+
+StatCard.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  accent: PropTypes.string,
 };
 
 export default StatCard;

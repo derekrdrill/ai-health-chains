@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './PatientDetail.css';
 import { apiService } from '../../services/apiService';
 
@@ -173,3 +174,8 @@ const PatientDetail = ({ patientId, onBack }) => {
 };
 
 export default PatientDetail;
+
+PatientDetail.propTypes = {
+  patientId: PropTypes.string,
+  onBack: PropTypes.func.isRequired,
+};

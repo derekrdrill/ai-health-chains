@@ -1,6 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const PaginationControls = ({ pagination, currentPage, loading, onPageChange }) => {
+const PatientPaginationControls = ({
+  pagination,
+  currentPage,
+  loading,
+  onPageChange,
+}) => {
   if (!pagination) return null;
 
   const hasTotalPatients = pagination.total > 0;
@@ -55,4 +61,16 @@ const PaginationControls = ({ pagination, currentPage, loading, onPageChange }) 
   );
 };
 
-export default PaginationControls;
+PatientPaginationControls.propTypes = {
+  pagination: PropTypes.shape({
+    total: PropTypes.number.isRequired,
+    totalPages: PropTypes.number,
+    page: PropTypes.number.isRequired,
+    limit: PropTypes.number.isRequired,
+  }).isRequired,
+  currentPage: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+};
+
+export default PatientPaginationControls;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import './TransactionHistory.css';
 import { apiService } from '../../services/apiService';
 import TransactionCard from './TransactionCard';
@@ -80,3 +81,7 @@ const TransactionHistory = ({ account }) => {
 };
 
 export default TransactionHistory;
+
+TransactionHistory.propTypes = {
+  account: PropTypes.string,
+};
