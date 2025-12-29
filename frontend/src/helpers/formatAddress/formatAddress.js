@@ -14,4 +14,3 @@ const formatAddress = ({
 };
 
 export default formatAddress;
-

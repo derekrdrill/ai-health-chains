@@ -23,4 +23,3 @@ const formatDateTime = ({
 };
 
 export default formatDateTime;
-
