@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PatientList.css";
+import PatientPaginationControls from "./PatientPaginationControls";
 import { apiService } from "../../services/apiService";
 
 const PAGE_SIZE = 12;
@@ -168,48 +169,12 @@ const PatientList = ({ onSelectPatient }) => {
       </div>
 
       {pagination && (
-        <div className="pagination">
-          <button
-            onClick={() => goToPage(currentPage - 1)}
-            disabled={currentPage === 1 || loading}
-          >
-            Previous
-          </button>
-          {Array.from({ length: pagination.totalPages || 0 }, (_, index) => {
-            const page = index + 1;
-            return (
-              <button
-                key={page}
-                className={page === currentPage ? "active" : ""}
-                onClick={() => goToPage(page)}
-                disabled={loading}
-              >
-                {page}
-              </button>
-            );
-          })}
-          <button
-            onClick={() => goToPage(currentPage + 1)}
-            disabled={
-              !pagination.totalPages ||
-              currentPage === pagination.totalPages ||
-              loading
-            }
-          >
-            Next
-          </button>
-          <div className="pagination-info">
-            {pagination.total > 0 ? (
-              <>
-                Showing {(pagination.page - 1) * pagination.limit + 1}-
-                {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
-                of {pagination.total}
-              </>
-            ) : (
-              "No patients to display"
-            )}
-          </div>
-        </div>
+        <PatientPaginationControls
+          pagination={pagination}
+          currentPage={currentPage}
+          loading={loading}
+          onPageChange={goToPage}
+        />
       )}
     </div>
   );

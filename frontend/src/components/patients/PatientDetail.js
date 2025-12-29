@@ -8,6 +8,9 @@ const PatientDetail = ({ patientId, onBack }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const hasErrorLoadingPatient = error || !patient;
+  const hasNoRecords = records.length === 0;
+
   useEffect(() => {
     const fetchPatientData = async () => {
       setLoading(true);
@@ -50,6 +53,13 @@ const PatientDetail = ({ patientId, onBack }) => {
     return "diagnostic";
   };
 
+  const getRecordDescription = (description) => {
+    if (!description) return "";
+    return description.length > 320
+      ? `${description.slice(0, 320)}…`
+      : description;
+  };
+
   if (loading) {
     return (
       <div className="patient-detail-container">
@@ -58,7 +68,7 @@ const PatientDetail = ({ patientId, onBack }) => {
     );
   }
 
-  if (error || !patient) {
+  if (hasErrorLoadingPatient) {
     return (
       <div className="patient-detail-container">
         <div className="error">
@@ -124,7 +134,7 @@ const PatientDetail = ({ patientId, onBack }) => {
 
         <div className="patient-records-section">
           <h2>Medical Records ({records.length})</h2>
-          {records.length === 0 ? (
+          {hasNoRecords ? (
             <div className="placeholder">
               <p>No medical records found for this patient.</p>
             </div>
@@ -148,9 +158,7 @@ const PatientDetail = ({ patientId, onBack }) => {
                     </span>
                   </div>
                   <p className="record-description">
-                    {record.description?.length > 320
-                      ? `${record.description.slice(0, 320)}…`
-                      : record.description}
+                    {getRecordDescription(record.description)}
                   </p>
                   <div className="record-meta">
                     <div className="record-meta-item">

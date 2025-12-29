@@ -17,6 +17,8 @@ const ConsentManagement = ({ account }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [updatingConsentId, setUpdatingConsentId] = useState(null);
 
+  const hasNoConsents = consents.length === 0;
+  const shouldShowCreateForm = showCreateForm && account;
   const statusFilter = filterStatus === "all" ? null : filterStatus;
 
   const fetchConsents = useCallback(async () => {
@@ -136,7 +138,7 @@ const ConsentManagement = ({ account }) => {
         </div>
       )}
 
-      {showCreateForm && account && (
+      {shouldShowCreateForm && (
         <div className="create-consent-form">
           <h3>Create New Consent</h3>
           <form onSubmit={handleCreateConsent}>
@@ -209,7 +211,7 @@ const ConsentManagement = ({ account }) => {
       </div>
 
       <div className="consents-list">
-        {consents.length === 0 ? (
+        {hasNoConsents ? (
           <div className="placeholder">
             <p>No consents found for this filter.</p>
           </div>

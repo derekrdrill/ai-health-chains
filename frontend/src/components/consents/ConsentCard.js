@@ -10,10 +10,10 @@ const ConsentCard = ({
   const createdAt = formatDateTime(consent.createdAt);
   const statusClass = getStatusClass(consent.status);
   const blockchainHash = consent.blockchainTxHash || "Not yet recorded";
-  const showActivateButton = consent.status === "pending";
+  const shouldShowActivateButton = consent.status === "pending";
 
   const handleActivate = () => {
-    if (showActivateButton) {
+    if (shouldShowActivateButton) {
       onActivate({
         consentId: consent.id,
         newStatus: "active",
@@ -50,7 +50,7 @@ const ConsentCard = ({
         </div>
       </div>
 
-      {showActivateButton && (
+      {shouldShowActivateButton && (
         <div className="consent-actions">
           <button
             className="action-btn primary"

@@ -10,6 +10,7 @@ const TransactionHistory = ({ account }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const hasNoTransactions = transactions.length === 0;
   const walletFilter = account || null;
 
   const fetchTransactions = useCallback(async () => {
@@ -66,7 +67,7 @@ const TransactionHistory = ({ account }) => {
       </div>
 
       <div className="transactions-list">
-        {transactions.length === 0 ? (
+        {hasNoTransactions ? (
           <div className="placeholder">
             <p>No transactions found.</p>
             {account && (
