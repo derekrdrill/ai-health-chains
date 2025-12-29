@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './PatientList.css';
 import PatientPaginationControls from './PatientPaginationControls';
+import PatientCard from './PatientCard';
 import { apiService } from '../../services/apiService';
 
 const PAGE_SIZE = 12;
@@ -53,11 +54,6 @@ const PatientList = ({ onSelectPatient }) => {
     setLoading(true);
   };
 
-  const formatAddress = (address) => {
-    if (!address) return 'N/A';
-    return `${address.slice(0, 8)}...${address.slice(-6)}`;
-  };
-
   const goToPage = (page) => {
     if (
       page === currentPage ||
@@ -97,6 +93,7 @@ const PatientList = ({ onSelectPatient }) => {
             type="text"
             placeholder="Search patients..."
             className="search-input"
+            id="patient-search-input"
             value={searchInput}
             onChange={handleSearchChange}
           />
@@ -113,47 +110,11 @@ const PatientList = ({ onSelectPatient }) => {
           </div>
         ) : (
           patients.map((patient) => (
-            <div
+            <PatientCard
               key={patient.id}
-              className="patient-card"
-              onClick={() => onSelectPatient(patient.id)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onSelectPatient(patient.id);
-                }
-              }}
-            >
-              <div className="patient-card-header">
-                <div>
-                  <div className="patient-name">{patient.name}</div>
-                  <div className="patient-id">{patient.patientId}</div>
-                </div>
-                <div className="patient-id">{formatAddress(patient.walletAddress)}</div>
-              </div>
-              <div className="patient-info">
-                <div className="patient-info-item">
-                  <strong>Email:</strong> {patient.email}
-                </div>
-                <div className="patient-info-item">
-                  <strong>Phone:</strong> {patient.phone}
-                </div>
-                <div className="patient-info-item">
-                  <strong>Gender:</strong> {patient.gender}
-                </div>
-                <div className="patient-info-item">
-                  <strong>DOB:</strong>{' '}
-                  {patient.dateOfBirth
-                    ? new Intl.DateTimeFormat('en-US', {
-                        dateStyle: 'medium',
-                      }).format(new Date(patient.dateOfBirth))
-                    : 'N/A'}
-                </div>
-              </div>
-              <div className="patient-wallet">{patient.walletAddress}</div>
-            </div>
+              patient={patient}
+              onSelectPatient={onSelectPatient}
+            />
           ))
         )}
         {showInlineLoader && (
