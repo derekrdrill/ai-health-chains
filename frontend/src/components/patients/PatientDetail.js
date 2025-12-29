@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './PatientDetail.css';
 import { apiService } from '../../services/apiService';
+import { formatDateTime } from '../../helpers';
 
 const PatientDetail = ({ patientId, onBack }) => {
   const [patient, setPatient] = useState(null);
@@ -38,17 +39,15 @@ const PatientDetail = ({ patientId, onBack }) => {
     }
   }, [patientId]);
 
-  const formatDate = (date) => {
-    if (!date) return 'N/A';
-    try {
-      return new Date(date).toLocaleDateString('en-US', {
+  const formatDate = (date) =>
+    formatDateTime({
+      value: date,
+      options: {
         dateStyle: 'medium',
         timeZone: 'UTC',
-      });
-    } catch {
-      return 'N/A';
-    }
-  };
+      },
+      fallback: 'N/A',
+    });
 
   const getRecordTypeClass = (type) => {
     if (!type) return '';
