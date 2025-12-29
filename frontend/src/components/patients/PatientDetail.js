@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PatientDetail.css";
-import { apiService } from "../services/apiService";
+import { apiService } from "../../services/apiService";
 
 const PatientDetail = ({ patientId, onBack }) => {
   const [patient, setPatient] = useState(null);

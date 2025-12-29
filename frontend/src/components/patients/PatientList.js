@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PatientList.css";
-import { apiService } from "../services/apiService";
+import { apiService } from "../../services/apiService";
 
 const PAGE_SIZE = 12;
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./ConsentManagement.css";
-import { apiService } from "../services/apiService";
-import { useWeb3 } from "../hooks/useWeb3";
-import ConsentCard from "./ConsentManagement/_components/ConsentCard";
+import { apiService } from "../../services/apiService";
+import { useWeb3 } from "../../hooks/useWeb3";
+import ConsentCard from "./ConsentCard";
 
 const DEFAULT_FORM = { patientId: "", purpose: "" };
 

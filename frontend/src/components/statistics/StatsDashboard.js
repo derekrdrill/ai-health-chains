@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./StatsDashboard.css";
-import { apiService } from "../services/apiService";
-import StatCard from "./StatsDashboard/_components/StatCard";
+import { apiService } from "../../services/apiService";
+import StatCard from "./StatCard";
 
 const STAT_CONFIG = [
   { key: "totalPatients", label: "Total Patients", accent: "primary" },

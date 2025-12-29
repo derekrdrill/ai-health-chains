@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./TransactionHistory.css";
-import { apiService } from "../services/apiService";
-import TransactionCard from "./TransactionHistory/_components/TransactionCard";
+import { apiService } from "../../services/apiService";
+import TransactionCard from "./TransactionCard";
 
 const DEFAULT_LIMIT = 20;
 
