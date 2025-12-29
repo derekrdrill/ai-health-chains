@@ -1,38 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import './TransactionHistory.css';
-import { apiService } from '../services/apiService';
+import React, { useState, useEffect, useCallback } from "react";
+import "./TransactionHistory.css";
+import { apiService } from "../services/apiService";
+import TransactionCard from "./TransactionHistory/_components/TransactionCard";
+
+const DEFAULT_LIMIT = 20;
 
 const TransactionHistory = ({ account }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // TODO: Implement fetchTransactions function
+  const walletFilter = account || null;
+
+  const fetchTransactions = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getTransactions(
+        walletFilter,
+        DEFAULT_LIMIT
+      );
+      setTransactions(response.transactions || []);
+    } catch (err) {
+      setTransactions([]);
+      setError(err?.message || "Failed to load transactions");
+    } finally {
+      setLoading(false);
+    }
+  }, [walletFilter]);
+
   useEffect(() => {
-    const fetchTransactions = async () => {
-      setLoading(true);
-      try {
-        // TODO: Call apiService.getTransactions with account address if available
-        // TODO: Update transactions state
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTransactions();
-  }, [account]);
-
-  const formatAddress = (address) => {
-    if (!address) return '';
-    return `${address.slice(0, 8)}...${address.slice(-6)}`;
-  };
-
-  const formatDate = (timestamp) => {
-    // TODO: Format the timestamp to a readable date
-    return timestamp;
-  };
+  }, [fetchTransactions]);
 
   if (loading) {
     return (
@@ -45,7 +44,12 @@ const TransactionHistory = ({ account }) => {
   if (error) {
     return (
       <div className="transaction-history-container">
-        <div className="error">Error: {error}</div>
+        <div className="error">
+          Error: {error}
+          <button className="action-btn" onClick={fetchTransactions}>
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
@@ -56,24 +60,27 @@ const TransactionHistory = ({ account }) => {
         <h2>Transaction History</h2>
         {account && (
           <div className="wallet-filter">
-            Filtering for: {formatAddress(account)}
+            Filtering for: <span className="wallet-address">{account}</span>
           </div>
         )}
       </div>
 
-      {/* TODO: Display transactions list */}
-      {/* Show: type, from, to, amount, currency, status, timestamp, blockchainTxHash */}
       <div className="transactions-list">
-        {/* Your implementation here */}
-        <div className="placeholder">
-          <p>Transaction list will be displayed here</p>
-          <p>Implement the transaction list rendering</p>
-        </div>
+        {transactions.length === 0 ? (
+          <div className="placeholder">
+            <p>No transactions found.</p>
+            {account && (
+              <p>Try disconnecting the wallet filter to view all activity.</p>
+            )}
+          </div>
+        ) : (
+          transactions.map((transaction) => (
+            <TransactionCard key={transaction.id} transaction={transaction} />
+          ))
+        )}
       </div>
     </div>
   );
 };
 
 export default TransactionHistory;
-
-
