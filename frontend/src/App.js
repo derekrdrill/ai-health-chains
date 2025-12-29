@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import './App.css';
 import {
   PatientList,
   PatientDetail,
@@ -7,19 +7,19 @@ import {
   TransactionHistory,
   StatsDashboard,
   WalletConnection,
-} from "./components";
-import { useWeb3 } from "./hooks/useWeb3";
-import { apiService } from "./services/apiService";
+} from './components';
+import { useWeb3 } from './hooks/useWeb3';
+import { apiService } from './services/apiService';
 
 function App() {
   const { account, connectWallet, disconnectWallet, isConnected } = useWeb3();
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [activeTab, setActiveTab] = useState("patients");
+  const [activeTab, setActiveTab] = useState('patients');
 
   useEffect(() => {
     // Check if wallet is already connected
     if (window.ethereum) {
-      window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+      window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
         if (accounts.length > 0) {
           // Wallet already connected
         }
@@ -44,33 +44,33 @@ function App() {
 
       <nav className="App-nav">
         <button
-          className={activeTab === "patients" ? "active" : ""}
-          onClick={() => setActiveTab("patients")}
+          className={activeTab === 'patients' ? 'active' : ''}
+          onClick={() => setActiveTab('patients')}
         >
           Patients
         </button>
         <button
-          className={activeTab === "consents" ? "active" : ""}
-          onClick={() => setActiveTab("consents")}
+          className={activeTab === 'consents' ? 'active' : ''}
+          onClick={() => setActiveTab('consents')}
         >
           Consents
         </button>
         <button
-          className={activeTab === "transactions" ? "active" : ""}
-          onClick={() => setActiveTab("transactions")}
+          className={activeTab === 'transactions' ? 'active' : ''}
+          onClick={() => setActiveTab('transactions')}
         >
           Transactions
         </button>
         <button
-          className={activeTab === "stats" ? "active" : ""}
-          onClick={() => setActiveTab("stats")}
+          className={activeTab === 'stats' ? 'active' : ''}
+          onClick={() => setActiveTab('stats')}
         >
           Statistics
         </button>
       </nav>
 
       <main className="App-main">
-        {activeTab === "patients" && (
+        {activeTab === 'patients' && (
           <div className="patients-container">
             {selectedPatient ? (
               <PatientDetail
@@ -83,13 +83,11 @@ function App() {
           </div>
         )}
 
-        {activeTab === "consents" && <ConsentManagement account={account} />}
+        {activeTab === 'consents' && <ConsentManagement account={account} />}
 
-        {activeTab === "transactions" && (
-          <TransactionHistory account={account} />
-        )}
+        {activeTab === 'transactions' && <TransactionHistory account={account} />}
 
-        {activeTab === "stats" && <StatsDashboard />}
+        {activeTab === 'stats' && <StatsDashboard />}
       </main>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const ConsentCard = ({
   consent,
@@ -9,14 +9,14 @@ const ConsentCard = ({
 }) => {
   const createdAt = formatDateTime(consent.createdAt);
   const statusClass = getStatusClass(consent.status);
-  const blockchainHash = consent.blockchainTxHash || "Not yet recorded";
-  const shouldShowActivateButton = consent.status === "pending";
+  const blockchainHash = consent.blockchainTxHash || 'Not yet recorded';
+  const shouldShowActivateButton = consent.status === 'pending';
 
   const handleActivate = () => {
     if (shouldShowActivateButton) {
       onActivate({
         consentId: consent.id,
-        newStatus: "active",
+        newStatus: 'active',
         currentHash: consent.blockchainTxHash,
       });
     }
@@ -31,9 +31,7 @@ const ConsentCard = ({
             <strong>Patient:</strong> {consent.patientId}
           </div>
         </div>
-        <span className={`consent-status ${statusClass}`}>
-          {consent.status}
-        </span>
+        <span className={`consent-status ${statusClass}`}>{consent.status}</span>
       </div>
 
       <div className="consent-details">
@@ -57,7 +55,7 @@ const ConsentCard = ({
             onClick={handleActivate}
             disabled={isUpdating}
           >
-            {isUpdating ? "Updating..." : "Activate Consent"}
+            {isUpdating ? 'Updating...' : 'Activate Consent'}
           </button>
         </div>
       )}

@@ -92,6 +92,7 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 ### 1. PatientList Component (`frontend/src/components/PatientList.js`)
 
 **Tasks:**
+
 - Implement `fetchPatients` function to load patients from the API
 - Add search functionality with proper input handling
 - Display patients in a card-based layout
@@ -103,6 +104,7 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 ### 2. PatientDetail Component (`frontend/src/components/PatientDetail.js`)
 
 **Tasks:**
+
 - Fetch and display patient information (name, email, DOB, gender, phone, address, wallet)
 - Fetch and display patient's medical records
 - Format dates properly
@@ -110,12 +112,14 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 - Display blockchain hash for each record
 
 **API Endpoints:**
+
 - `GET /api/patients/:id`
 - `GET /api/patients/:id/records`
 
 ### 3. ConsentManagement Component (`frontend/src/components/ConsentManagement.js`)
 
 **Tasks:**
+
 - Fetch and display consents (with filtering by status)
 - Implement consent creation with MetaMask signature
 - Sign a message using the `signMessage` function from `useWeb3` hook
@@ -124,17 +128,20 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 - Display consent details including blockchain transaction hash
 
 **API Endpoints:**
+
 - `GET /api/consents?status=active`
 - `POST /api/consents`
 - `PATCH /api/consents/:id`
 
 **Web3 Integration:**
+
 - Use `signMessage` from `useWeb3` hook to sign consent messages
 - Format: `"I consent to: {purpose} for patient: {patientId}"`
 
 ### 4. TransactionHistory Component (`frontend/src/components/TransactionHistory.js`)
 
 **Tasks:**
+
 - Fetch and display blockchain transactions
 - Filter transactions by connected wallet address
 - Format addresses (truncate with ellipsis)
@@ -147,6 +154,7 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 ### 5. StatsDashboard Component (`frontend/src/components/StatsDashboard.js`)
 
 **Tasks:**
+
 - Fetch platform statistics
 - Display stats in an attractive grid layout
 - Show: Total Patients, Total Records, Total Consents, Active Consents, Pending Consents, Total Transactions
@@ -157,19 +165,23 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 ## API Documentation
 
 ### Base URL
+
 `http://localhost:5000/api`
 
 ### Available Endpoints
 
 #### Health Check
+
 - `GET /health` - Check API status
 
 #### Patients
+
 - `GET /patients?page=1&limit=10&search=` - Get paginated patients
 - `GET /patients/:id` - Get patient by ID
 - `GET /patients/:id/records` - Get patient records
 
 #### Consents
+
 - `GET /consents?patientId=&status=` - Get consents (with optional filters)
 - `GET /consents/:id` - Get consent by ID
 - `POST /consents` - Create new consent
@@ -190,12 +202,15 @@ Complete the frontend implementation by filling in the TODO sections in the foll
   ```
 
 #### Transactions
+
 - `GET /transactions?walletAddress=&limit=20` - Get transactions
 
 #### Statistics
+
 - `GET /stats` - Get platform statistics
 
 #### Signature Verification
+
 - `POST /verify-signature` - Verify wallet signature
   ```json
   {
@@ -210,6 +225,7 @@ Complete the frontend implementation by filling in the TODO sections in the foll
 ### MetaMask Connection
 
 The `useWeb3` hook is already implemented and provides:
+
 - `account` - Connected wallet address
 - `isConnected` - Connection status
 - `connectWallet()` - Connect MetaMask
@@ -219,7 +235,7 @@ The `useWeb3` hook is already implemented and provides:
 ### Example Usage
 
 ```javascript
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3 } from "../hooks/useWeb3";
 
 const { account, signMessage, isConnected } = useWeb3();
 
@@ -276,4 +292,3 @@ Your implementation will be evaluated on:
 If you have any questions about the assessment, please reach out to the hiring team.
 
 Good luck! 🚀
-

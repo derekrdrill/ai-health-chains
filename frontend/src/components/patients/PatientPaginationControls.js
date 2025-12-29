@@ -1,11 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const PaginationControls = ({
-  pagination,
-  currentPage,
-  loading,
-  onPageChange,
-}) => {
+const PaginationControls = ({ pagination, currentPage, loading, onPageChange }) => {
   if (!pagination) return null;
 
   const hasTotalPatients = pagination.total > 0;
@@ -18,10 +13,7 @@ const PaginationControls = ({
     (_, index) => index + 1
   );
   const startIndex = (pagination.page - 1) * pagination.limit + 1;
-  const endIndex = Math.min(
-    pagination.page * pagination.limit,
-    pagination.total
-  );
+  const endIndex = Math.min(pagination.page * pagination.limit, pagination.total);
 
   return (
     <div className="pagination">
@@ -35,7 +27,7 @@ const PaginationControls = ({
       {pageNumbers.map((page) => (
         <button
           key={page}
-          className={page === currentPage ? "active" : ""}
+          className={page === currentPage ? 'active' : ''}
           onClick={() => onPageChange(page)}
           disabled={loading}
         >
@@ -56,7 +48,7 @@ const PaginationControls = ({
             Showing {startIndex}-{endIndex} of {pagination.total}
           </>
         ) : (
-          "No patients to display"
+          'No patients to display'
         )}
       </div>
     </div>

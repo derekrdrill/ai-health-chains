@@ -29,5 +29,3 @@ const WalletConnection = ({ account, isConnected, onConnect, onDisconnect }) => 
 };
 
 export default WalletConnection;
-
-

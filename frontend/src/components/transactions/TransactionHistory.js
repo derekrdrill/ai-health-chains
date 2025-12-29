@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import "./TransactionHistory.css";
-import { apiService } from "../../services/apiService";
-import TransactionCard from "./TransactionCard";
+import React, { useState, useEffect, useCallback } from 'react';
+import './TransactionHistory.css';
+import { apiService } from '../../services/apiService';
+import TransactionCard from './TransactionCard';
 
 const DEFAULT_LIMIT = 20;
 
@@ -17,14 +17,11 @@ const TransactionHistory = ({ account }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await apiService.getTransactions(
-        walletFilter,
-        DEFAULT_LIMIT
-      );
+      const response = await apiService.getTransactions(walletFilter, DEFAULT_LIMIT);
       setTransactions(response.transactions || []);
     } catch (err) {
       setTransactions([]);
-      setError(err?.message || "Failed to load transactions");
+      setError(err?.message || 'Failed to load transactions');
     } finally {
       setLoading(false);
     }
@@ -70,9 +67,7 @@ const TransactionHistory = ({ account }) => {
         {hasNoTransactions ? (
           <div className="placeholder">
             <p>No transactions found.</p>
-            {account && (
-              <p>Try disconnecting the wallet filter to view all activity.</p>
-            )}
+            {account && <p>Try disconnecting the wallet filter to view all activity.</p>}
           </div>
         ) : (
           transactions.map((transaction) => (

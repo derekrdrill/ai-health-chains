@@ -11,14 +11,13 @@ export const useWeb3 = () => {
     // Check if MetaMask is installed
     if (typeof window.ethereum !== 'undefined') {
       // Check if already connected
-      window.ethereum.request({ method: 'eth_accounts' })
-        .then(accounts => {
-          if (accounts.length > 0) {
-            setAccount(accounts[0]);
-            setIsConnected(true);
-            initializeProvider();
-          }
-        });
+      window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setIsConnected(true);
+          initializeProvider();
+        }
+      });
 
       // Listen for account changes
       window.ethereum.on('accountsChanged', (accounts) => {
@@ -45,7 +44,7 @@ export const useWeb3 = () => {
     if (window.ethereum) {
       const web3Provider = new ethers.BrowserProvider(window.ethereum);
       setProvider(web3Provider);
-      web3Provider.getSigner().then(s => setSigner(s));
+      web3Provider.getSigner().then((s) => setSigner(s));
     }
   };
 
@@ -95,5 +94,3 @@ export const useWeb3 = () => {
     signMessage,
   };
 };
-
-

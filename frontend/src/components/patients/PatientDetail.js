@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import "./PatientDetail.css";
-import { apiService } from "../../services/apiService";
+import React, { useState, useEffect } from 'react';
+import './PatientDetail.css';
+import { apiService } from '../../services/apiService';
 
 const PatientDetail = ({ patientId, onBack }) => {
   const [patient, setPatient] = useState(null);
@@ -26,7 +26,7 @@ const PatientDetail = ({ patientId, onBack }) => {
       } catch (err) {
         setPatient(null);
         setRecords([]);
-        setError(err?.message || "Failed to load patient details");
+        setError(err?.message || 'Failed to load patient details');
       } finally {
         setLoading(false);
       }
@@ -38,26 +38,24 @@ const PatientDetail = ({ patientId, onBack }) => {
   }, [patientId]);
 
   const formatDate = (date) => {
-    if (!date) return "N/A";
-    return new Intl.DateTimeFormat("en-US", {
-      dateStyle: "medium",
-      timeZone: "UTC",
+    if (!date) return 'N/A';
+    return new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'medium',
+      timeZone: 'UTC',
     }).format(new Date(date));
   };
 
   const getRecordTypeClass = (type) => {
-    if (!type) return "";
+    if (!type) return '';
     const normalized = type.toLowerCase();
-    if (normalized.includes("lab")) return "lab";
-    if (normalized.includes("treat")) return "treatment";
-    return "diagnostic";
+    if (normalized.includes('lab')) return 'lab';
+    if (normalized.includes('treat')) return 'treatment';
+    return 'diagnostic';
   };
 
   const getRecordDescription = (description) => {
-    if (!description) return "";
-    return description.length > 320
-      ? `${description.slice(0, 320)}…`
-      : description;
+    if (!description) return '';
+    return description.length > 320 ? `${description.slice(0, 320)}…` : description;
   };
 
   if (loading) {
@@ -71,9 +69,7 @@ const PatientDetail = ({ patientId, onBack }) => {
   if (hasErrorLoadingPatient) {
     return (
       <div className="patient-detail-container">
-        <div className="error">
-          Error loading patient: {error || "Patient not found"}
-        </div>
+        <div className="error">Error loading patient: {error || 'Patient not found'}</div>
         <button onClick={onBack} className="back-btn">
           Back to List
         </button>
@@ -115,9 +111,7 @@ const PatientDetail = ({ patientId, onBack }) => {
             </div>
             <div className="info-item">
               <span className="info-label">Date of Birth</span>
-              <span className="info-value">
-                {formatDate(patient.dateOfBirth)}
-              </span>
+              <span className="info-value">{formatDate(patient.dateOfBirth)}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Address</span>
@@ -125,9 +119,7 @@ const PatientDetail = ({ patientId, onBack }) => {
             </div>
             <div className="info-item">
               <span className="info-label">Wallet</span>
-              <span className="info-value wallet">
-                {patient.walletAddress || "N/A"}
-              </span>
+              <span className="info-value wallet">{patient.walletAddress || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -145,15 +137,9 @@ const PatientDetail = ({ patientId, onBack }) => {
                   <div className="record-header">
                     <div>
                       <div className="record-title">{record.title}</div>
-                      <div className="record-date">
-                        {formatDate(record.date)}
-                      </div>
+                      <div className="record-date">{formatDate(record.date)}</div>
                     </div>
-                    <span
-                      className={`record-type ${getRecordTypeClass(
-                        record.type
-                      )}`}
-                    >
+                    <span className={`record-type ${getRecordTypeClass(record.type)}`}>
                       {record.type}
                     </span>
                   </div>

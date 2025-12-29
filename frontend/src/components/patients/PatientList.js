@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import "./PatientList.css";
-import PatientPaginationControls from "./PatientPaginationControls";
-import { apiService } from "../../services/apiService";
+import React, { useState, useEffect } from 'react';
+import './PatientList.css';
+import PatientPaginationControls from './PatientPaginationControls';
+import { apiService } from '../../services/apiService';
 
 const PAGE_SIZE = 12;
 
@@ -9,8 +9,8 @@ const PatientList = ({ onSelectPatient }) => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchInput, setSearchInput] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchInput, setSearchInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
 
@@ -26,7 +26,7 @@ const PatientList = ({ onSelectPatient }) => {
     } catch (err) {
       setPatients([]);
       setPagination(null);
-      setError(err?.message || "Failed to load patients");
+      setError(err?.message || 'Failed to load patients');
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ const PatientList = ({ onSelectPatient }) => {
   };
 
   const formatAddress = (address) => {
-    if (!address) return "N/A";
+    if (!address) return 'N/A';
     return `${address.slice(0, 8)}...${address.slice(-6)}`;
   };
 
@@ -100,11 +100,7 @@ const PatientList = ({ onSelectPatient }) => {
             onChange={handleSearchChange}
           />
           {showInlineLoader && (
-            <div
-              className="search-spinner"
-              role="status"
-              aria-label="Searching"
-            />
+            <div className="search-spinner" role="status" aria-label="Searching" />
           )}
         </div>
       </div>
@@ -123,7 +119,7 @@ const PatientList = ({ onSelectPatient }) => {
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
+                if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   onSelectPatient(patient.id);
                 }
@@ -134,9 +130,7 @@ const PatientList = ({ onSelectPatient }) => {
                   <div className="patient-name">{patient.name}</div>
                   <div className="patient-id">{patient.patientId}</div>
                 </div>
-                <div className="patient-id">
-                  {formatAddress(patient.walletAddress)}
-                </div>
+                <div className="patient-id">{formatAddress(patient.walletAddress)}</div>
               </div>
               <div className="patient-info">
                 <div className="patient-info-item">
@@ -149,12 +143,12 @@ const PatientList = ({ onSelectPatient }) => {
                   <strong>Gender:</strong> {patient.gender}
                 </div>
                 <div className="patient-info-item">
-                  <strong>DOB:</strong>{" "}
+                  <strong>DOB:</strong>{' '}
                   {patient.dateOfBirth
-                    ? new Intl.DateTimeFormat("en-US", {
-                        dateStyle: "medium",
+                    ? new Intl.DateTimeFormat('en-US', {
+                        dateStyle: 'medium',
                       }).format(new Date(patient.dateOfBirth))
-                    : "N/A"}
+                    : 'N/A'}
                 </div>
               </div>
               <div className="patient-wallet">{patient.walletAddress}</div>
