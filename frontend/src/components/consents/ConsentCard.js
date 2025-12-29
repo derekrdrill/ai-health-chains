@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { formatDateTime, getStatusClass } from '../../helpers';
 
-const ConsentCard = ({
-  consent,
-  formatDateTime,
-  getStatusClass,
-  onActivate,
-  isUpdating,
-}) => {
-  const createdAt = formatDateTime(consent.createdAt);
-  const statusClass = getStatusClass(consent.status);
+const ConsentCard = ({ consent, onActivate, isUpdating }) => {
+  const createdAt = formatDateTime({ value: consent.createdAt });
+  const statusClass = getStatusClass({ status: consent.status, variant: 'consent' });
   const blockchainHash = consent.blockchainTxHash || 'Not yet recorded';
   const shouldShowActivateButton = consent.status === 'pending';
 
@@ -74,8 +69,6 @@ ConsentCard.propTypes = {
     blockchainTxHash: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
-  formatDateTime: PropTypes.func.isRequired,
-  getStatusClass: PropTypes.func.isRequired,
   onActivate: PropTypes.func.isRequired,
   isUpdating: PropTypes.bool.isRequired,
 };

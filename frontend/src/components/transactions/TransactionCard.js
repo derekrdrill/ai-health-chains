@@ -1,18 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const formatAddress = (address) => {
-  if (!address) return 'N/A';
-  return `${address.slice(0, 8)}...${address.slice(-6)}`;
-};
-
-const formatDateTime = (timestamp) => {
-  if (!timestamp) return 'N/A';
-  return new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(timestamp));
-};
+import { formatAddress, formatDateTime, getStatusClass } from '../../helpers';
 
 const formatAmount = (amount, currency) => {
   if (!amount) return '0';
@@ -24,18 +12,13 @@ const getTypeClass = (type) => {
   return type.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
 };
 
-const getStatusClass = (status) => {
-  if (!status) return 'pending';
-  return status.toLowerCase();
-};
-
 const TransactionCard = ({ transaction }) => {
   if (!transaction) return null;
 
   const typeClass = getTypeClass(transaction.type);
-  const statusClass = getStatusClass(transaction.status);
+  const statusClass = getStatusClass({ status: transaction.status });
   const formattedAmount = formatAmount(transaction.amount, transaction.currency);
-  const formattedTimestamp = formatDateTime(transaction.timestamp);
+  const formattedTimestamp = formatDateTime({ value: transaction.timestamp });
 
   return (
     <div className="transaction-card">
@@ -58,13 +41,17 @@ const TransactionCard = ({ transaction }) => {
         <div className="transaction-detail-item">
           <span className="transaction-detail-label">From</span>
           <span className="transaction-detail-value address">
-            {formatAddress(transaction.from)}
+            {formatAddress({
+              address: transaction.from,
+              prefixLength: 8,
+              suffixLength: 6,
+            })}
           </span>
         </div>
         <div className="transaction-detail-item">
           <span className="transaction-detail-label">To</span>
           <span className="transaction-detail-value address">
-            {formatAddress(transaction.to)}
+            {formatAddress({ address: transaction.to, prefixLength: 8, suffixLength: 6 })}
           </span>
         </div>
         <div className="transaction-detail-item">

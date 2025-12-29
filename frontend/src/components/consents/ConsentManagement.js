@@ -40,16 +40,6 @@ const ConsentManagement = ({ account }) => {
     fetchConsents();
   }, [fetchConsents]);
 
-  const formatDateTime = (isoDate) => {
-    if (!isoDate) return 'N/A';
-    return new Intl.DateTimeFormat('en-US', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(new Date(isoDate));
-  };
-
-  const getStatusClass = (status) => (status === 'active' ? 'active' : 'pending');
-
   const generateTxHash = () => {
     const randomSegment = Math.random().toString(16).slice(2, 10);
     return `0x${Date.now().toString(16)}${randomSegment}`;
@@ -214,8 +204,6 @@ const ConsentManagement = ({ account }) => {
             <ConsentCard
               key={consent.id}
               consent={consent}
-              formatDateTime={formatDateTime}
-              getStatusClass={getStatusClass}
               onActivate={handleUpdateStatus}
               isUpdating={updatingConsentId === consent.id}
             />

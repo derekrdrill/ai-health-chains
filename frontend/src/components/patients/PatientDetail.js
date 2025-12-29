@@ -40,10 +40,14 @@ const PatientDetail = ({ patientId, onBack }) => {
 
   const formatDate = (date) => {
     if (!date) return 'N/A';
-    return new Intl.DateTimeFormat('en-US', {
-      dateStyle: 'medium',
-      timeZone: 'UTC',
-    }).format(new Date(date));
+    try {
+      return new Date(date).toLocaleDateString('en-US', {
+        dateStyle: 'medium',
+        timeZone: 'UTC',
+      });
+    } catch {
+      return 'N/A';
+    }
   };
 
   const getRecordTypeClass = (type) => {

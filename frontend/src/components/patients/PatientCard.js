@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const formatAddress = (address) => {
-  if (!address) return 'N/A';
-  return `${address.slice(0, 8)}...${address.slice(-6)}`;
-};
+import { formatAddress } from '../../helpers';
 
 const formatBirthDate = (date) => {
   if (!date) return 'N/A';
@@ -42,7 +38,13 @@ const PatientCard = ({ patient, onSelectPatient }) => {
           <div className="patient-name">{patient.name}</div>
           <div className="patient-id">{patient.patientId}</div>
         </div>
-        <div className="patient-id">{formatAddress(patient.walletAddress)}</div>
+        <div className="patient-id">
+          {formatAddress({
+            address: patient.walletAddress,
+            prefixLength: 8,
+            suffixLength: 6,
+          })}
+        </div>
       </div>
       <div className="patient-info">
         <div className="patient-info-item">
